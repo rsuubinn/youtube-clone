@@ -2,6 +2,5 @@ extends layouts
 include mixins/video
 
 block content 
-  a(href="/videos/upload") Upload Video
   each video in videos 
     +videoInfo(video)
