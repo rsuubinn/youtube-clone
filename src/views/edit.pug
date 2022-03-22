@@ -3,5 +3,7 @@ extends layouts
 block content 
   h4 Change Video Title
   form(method="POST")
-    input(name="title",placeholder="Video Title", value=video.title, required)
+    input(name="title",placeholder="Title", value=video.title, required)
+    input(name="description",placeholder="Description", value=video.description, required)
+    input(name="hashtags",placeholder="Hashtags", value=video.hashtags.join(), required)
     input(value="Save", type="submit")
