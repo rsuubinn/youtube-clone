@@ -1,5 +1,10 @@
-export const join = (req, res) => {
-  res.send("Join");
+import User from "../models/User";
+
+export const getJoin = (req, res) => {
+  return res.render("join", { pageTitle: "Join" });
+};
+export const postJoin = (req, res) => {
+  return res.render("join", { pageTitle: "Join" });
 };
 
 export const login = (req, res) => {
