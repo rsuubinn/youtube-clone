@@ -1,5 +1,7 @@
 import User from "../models/User";
 import bcrypt from "bcrypt";
+import req from "express/lib/request";
+import { json } from "express/lib/response";
 
 export const getJoin = (req, res) => {
   return res.render("join", { pageTitle: "Join" });
@@ -63,7 +65,7 @@ export const postLogin = async (req, res) => {
 export const startGithubLogin = (req, res) => {
   const baseUrl = "https://github.com/login/oauth/authorize";
   const config = {
-    client_id: "95c65b175d0798e292fd",
+    client_id: process.env.GH_CLIENT,
     allow_signup: false,
     scope: "read:user user:email",
   };
@@ -72,7 +74,24 @@ export const startGithubLogin = (req, res) => {
   return res.redirect(finalURL);
 };
 
-export const finishGithubLogin = (req, res) => {};
+export const finishGithubLogin = async (req, res) => {
+  const baseUrl = "https://github.com/login/oauth/access_token";
+  const config = {
+    client_id: process.env.GH_CLIENT,
+    client_secret: process.env.GH_SECRET,
+    code: req.query.code,
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalURL = `${baseUrl}?${params}`;
+  const data = await fetch(finalURL, {
+    method: "POST",
+    header: {
+      Accept: "application/json",
+    },
+  });
+  const json = await data.json();
+  console.log(json);
+};
 
 export const profile = (req, res) => {
   res.send("See profile");
