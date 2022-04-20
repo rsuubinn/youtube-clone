@@ -18,10 +18,10 @@ app.use(logger);
 
 app.use(
   session({
-    secret: "Hello",
+    secret: process.env.COOKIE_SECRET,
     resave: false,
     saveUninitialized: false,
-    store: mongoStore.create({ mongoUrl: "mongodb://127.0.0.1:27017/youtube" }),
+    store: mongoStore.create({ mongoUrl: process.env.DB_URL }),
   })
 );
 
