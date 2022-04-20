@@ -1,7 +1,7 @@
 import User from "../models/User";
+import fetch from "node-fetch";
 import bcrypt from "bcrypt";
-import req from "express/lib/request";
-import { json } from "express/lib/response";
+import { token } from "morgan";
 
 export const getJoin = (req, res) => {
   return res.render("join", { pageTitle: "Join" });
@@ -83,14 +83,27 @@ export const finishGithubLogin = async (req, res) => {
   };
   const params = new URLSearchParams(config).toString();
   const finalURL = `${baseUrl}?${params}`;
-  const data = await fetch(finalURL, {
-    method: "POST",
-    header: {
-      Accept: "application/json",
-    },
-  });
-  const json = await data.json();
-  console.log(json);
+  const tokenRequest = await (
+    await fetch(finalURL, {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+      },
+    })
+  ).json();
+  if ("access_token" in tokenRequest) {
+    const { access_token } = tokenRequest;
+    const userRequest = await (
+      await fetch("https://api.github.com/user", {
+        headers: {
+          Authorization: `token ${access_token}`,
+        },
+      })
+    ).json();
+    console.log(userRequest);
+  } else {
+    return res.redirect("/login");
+  }
 };
 
 export const profile = (req, res) => {
