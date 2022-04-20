@@ -60,6 +60,20 @@ export const postLogin = async (req, res) => {
   return res.redirect("/");
 };
 
+export const startGithubLogin = (req, res) => {
+  const baseUrl = "https://github.com/login/oauth/authorize";
+  const config = {
+    client_id: "95c65b175d0798e292fd",
+    allow_signup: false,
+    scope: "read:user user:email",
+  };
+  const params = new URLSearchParams(config).toString();
+  const finalURL = `${baseUrl}?${params}`;
+  return res.redirect(finalURL);
+};
+
+export const finishGithubLogin = (req, res) => {};
+
 export const profile = (req, res) => {
   res.send("See profile");
 };
