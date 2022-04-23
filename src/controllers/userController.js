@@ -149,12 +149,15 @@ export const postEdit = async (req, res) => {
   // 정보 변경 중인지 확인
   if (email != req.session.email || username != req.session.username) {
     const exists = await User.exists({
+      // 중복 존재 확인
       $or: [{ username }, { email }],
     });
     console.log(exists._id);
     console.log(_id);
     if (exists) {
+      //중복 있을 시
       if (_id != exists._id) {
+        // 중복 아이디 값, 내 아이디 값 비교
         return res.status(400).render("edit-profile", {
           pageTitle: "Edit Profile",
           errorMessage: "This email or username is already taken.",
@@ -176,6 +179,17 @@ export const postEdit = async (req, res) => {
   );
   req.session.user = updatedUser;
   return res.redirect("/users/edit");
+};
+
+export const getChangePassword = (req, res) => {
+  if (req.session.user.socialOnly === true) {
+    return res.redirect("/");
+  }
+  return res.render("users/change-password", { pageTitle: "Change Password" });
+};
+
+export const postChangePassword = (req, res) => {
+  return res.redriect("/");
 };
 
 export const profile = (req, res) => {
