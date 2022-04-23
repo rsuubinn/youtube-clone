@@ -145,13 +145,37 @@ export const postEdit = async (req, res) => {
     },
     body: { name, username, email, location },
   } = req;
-  await User.findByIdAndUpdate(_id, {
-    name,
-    username,
-    email,
-    location,
-  });
-  return res.render("edit-profile");
+
+  // 정보 변경 중인지 확인
+  if (email != req.session.email || username != req.session.username) {
+    const exists = await User.exists({
+      $or: [{ username }, { email }],
+    });
+    console.log(exists._id);
+    console.log(_id);
+    if (exists) {
+      if (_id != exists._id) {
+        return res.status(400).render("edit-profile", {
+          pageTitle: "Edit Profile",
+          errorMessage: "This email or username is already taken.",
+        });
+      }
+    }
+  }
+  const updatedUser = await User.findByIdAndUpdate(
+    _id,
+    {
+      name,
+      username,
+      email,
+      location,
+    },
+    {
+      new: true,
+    }
+  );
+  req.session.user = updatedUser;
+  return res.redirect("/users/edit");
 };
 
 export const profile = (req, res) => {
