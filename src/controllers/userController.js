@@ -125,25 +125,27 @@ export const finishGithubLogin = async (req, res) => {
         socialOnly: true,
         location: userData.location,
       });
+      console.log(user);
     }
     req.session.loggedIn = true;
     req.session.user = user;
-    console.log(user);
     return res.redirect("/");
   } else {
     return res.redirect("/login");
   }
 };
 
+export const getEdit = (req, res) => {
+  return res.render("edit-profile", { pageTitle: "Edit Profile" });
+};
+export const postEdit = (req, res) => {};
+
 export const profile = (req, res) => {
   res.send("See profile");
 };
 export const logout = (req, res) => {
   req.session.destroy();
-  res.redirect("/");
-};
-export const editProfile = (req, res) => {
-  res.send("Edit profile");
+  return res.redirect("/");
 };
 export const deleteProfile = (req, res) => {
   res.send("Delete profile");
