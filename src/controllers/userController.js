@@ -143,7 +143,7 @@ export const postEdit = async (req, res) => {
       user: { _id, avatarUrl },
     },
     body: { name, username, email, location },
-    file: { path },
+    file,
   } = req;
 
   // 정보 변경 중인지 확인
