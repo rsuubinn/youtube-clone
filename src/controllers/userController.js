@@ -1,7 +1,6 @@
 import User from "../models/User";
 import fetch from "node-fetch";
 import bcrypt from "bcrypt";
-import { token } from "morgan";
 
 export const getJoin = (req, res) => {
   return res.render("join", { pageTitle: "Join" });
@@ -221,13 +220,20 @@ export const postChangePassword = async (req, res) => {
   return res.redirect("/login");
 };
 
-export const profile = (req, res) => {
-  res.send("See profile");
-};
 export const logout = (req, res) => {
   req.session.destroy();
   return res.redirect("/");
 };
+
+export const profile = async (req, res) => {
+  const { id } = req.params;
+  const user = await User.findById(id);
+  if (!user) {
+    return res.status(404).render("404", { pageTitle: "User not found." });
+  }
+  return res.render("users/profile", { pageTitle: user.name, user });
+};
+
 export const deleteProfile = (req, res) => {
   res.send("Delete profile");
 };

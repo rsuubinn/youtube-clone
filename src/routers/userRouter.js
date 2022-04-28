@@ -33,6 +33,6 @@ userRouter
   .all(protectorMiddleware)
   .get(getChangePassword)
   .post(postChangePassword);
-userRouter.get(":id", profile);
+userRouter.get("/:id", profile);
 
 export default userRouter;
