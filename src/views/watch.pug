@@ -4,7 +4,9 @@ block content
   video(src="/" + video.fileUrl, controls)
   p=video.description
   small=video.createdAt
+  small This video uploaded by #{owner.name}
   hr
-  a(href=`${video.id}/edit`) Edit Video &rarr;
-  br
-  a(href=`${video.id}/delete`) Delete Video &rarr;
+  if String(video.owner) === String(loggedInUser._id)
+    a(href=`${video.id}/edit`) Edit Video &rarr;
+    br
+    a(href=`${video.id}/delete`) Delete Video &rarr;
