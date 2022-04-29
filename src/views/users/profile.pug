@@ -1,4 +1,6 @@
 extends ../layouts
+include ../mixins/video
 
 block content 
-  h2 hi
+  each video in videos 
+    +videoInfo(video)
