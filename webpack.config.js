@@ -8,11 +8,13 @@ module.exports = {
       filename: "css/styles.css",
     }),
   ],
+  watch: true,
   // 변경할 파일 경로
   entry: "./src/client/js/main.js",
   output: {
     filename: "js/main.js", // 변경 후 파일 이름
     path: path.resolve(__dirname, "assets"), // 저장할 경로
+    clean: true,
   },
   module: {
     rules: [
