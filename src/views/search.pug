@@ -2,9 +2,11 @@ extends layouts
 include mixins/video
 
 block content
-  form(method="GET")
-    input(placeholder="Searching by title", name="keyword", required)
-    input(type="submit", value="Search")
-  div 
+  form(method="GET").search__form
+    input(placeholder="검색어를 입력하세요.", name="keyword", required)
+    input(type="submit", value="검색")
+  div.video-grid
     each video in videos
       +videoInfo(video)
+    else 
+      span.empty__message 비디오가 존재하지 않습니다.
