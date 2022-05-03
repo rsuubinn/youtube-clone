@@ -1,8 +1,8 @@
 .search__form {
   margin-bottom: 60px;
   display: flex;
-  align-items: center;
   position: relative;
+  align-items: center;
   input {
     all: unset;
     padding: 15px 20px;
@@ -16,6 +16,8 @@
   }
   button {
     all: unset;
+  }
+  button {
     position: absolute;
     right: 15px;
     font-size: 18px;
