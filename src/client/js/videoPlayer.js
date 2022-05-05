@@ -9,6 +9,7 @@ const fullScreenBtn = document.getElementById("fullScreen");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
 
+let controlsMovementTimeout = null;
 let controlsTimeout = null;
 let volumeValue = 0.5;
 video.volume = volumeValue;
@@ -81,18 +82,26 @@ const handleFullScreen = () => {
   }
 };
 
+const hideControls = () => {
+  videoControls.classList.remove("showing");
+};
+
 const handleMouseMove = () => {
   if (controlsTimeout) {
     clearTimeout(controlsTimeout);
     controlsTimeout = null;
   }
+  if (controlsMovementTimeout) {
+    clearTimeout(controlsMovementTimeout);
+    controlsMovementTimeout = null;
+  }
+  // showing 클래스를 추가와 동시에 삭제 타임아웃 실행
   videoControls.classList.add("showing");
+  controlsMovementTimeout = setTime(hideControls(), 3000);
 };
 
 const handleMouseLeave = () => {
-  controlsTimeout = setTimeout(() => {
-    videoControls.classList.remove("showing");
-  }, 3000);
+  controlsTimeout = setTimeout(hideControls(), 3000);
 };
 
 playBtn.addEventListener("click", handlePlayClick);
