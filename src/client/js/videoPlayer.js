@@ -97,11 +97,11 @@ const handleMouseMove = () => {
   }
   // showing 클래스를 추가와 동시에 삭제 타임아웃 실행
   videoControls.classList.add("showing");
-  controlsMovementTimeout = setTime(hideControls(), 3000);
+  controlsMovementTimeout = setTimeout(hideControls, 3000);
 };
 
 const handleMouseLeave = () => {
-  controlsTimeout = setTimeout(hideControls(), 3000);
+  controlsTimeout = setTimeout(hideControls, 3000);
 };
 
 playBtn.addEventListener("click", handlePlayClick);
