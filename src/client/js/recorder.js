@@ -1,11 +1,13 @@
 const recordBtn = document.getElementById("recordBtn");
+const video = document.getElementById("preview");
 
 const handleRecord = async () => {
   const stream = await navigator.mediaDevices.getUserMedia({
-    audio: true,
+    audio: false,
     video: true,
   });
-  console.log(stream);
+  video.srcObject = stream;
+  video.play();
 };
 
 recordBtn.addEventListener("click", handleRecord);
