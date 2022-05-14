@@ -1,5 +1,4 @@
 import { createFFmpeg, fetchFile } from "@ffmpeg/ffmpeg";
-
 const recordBtn = document.getElementById("recordBtn");
 const video = document.getElementById("preview");
 
@@ -71,9 +70,9 @@ const handleDownload = async () => {
 };
 
 const handleStart = () => {
-  recordBtn.innerText = "Stop Recording";
+  recordBtn.innerText = "Recording";
+  recordBtn.disabled = true;
   recordBtn.removeEventListener("click", handleStart);
-  recordBtn.addEventListener("click", handleStop);
   recorder = new MediaRecorder(stream, { mimeType: "video/webm" });
 
   // 녹화가 끝나면 코드 실행
@@ -83,21 +82,23 @@ const handleStart = () => {
     video.src = videoFile;
     video.loop = true;
     video.play();
+    recordBtn.innerText = "Download";
+    recordBtn.disabled = false;
+    recordBtn.addEventListener("click", handleDownload);
   };
   recorder.start();
-};
-
-const handleStop = () => {
-  recordBtn.innerText = "Download Recording";
-  recordBtn.removeEventListener("click", handleStop);
-  recordBtn.addEventListener("click", handleDownload);
-  recorder.stop();
+  setTimeout(() => {
+    recorder.stop();
+  }, 3000);
 };
 
 const init = async () => {
   stream = await navigator.mediaDevices.getUserMedia({
     audio: false,
-    video: true,
+    video: {
+      width: 1024,
+      height: 576,
+    },
   });
   video.srcObject = stream;
   video.play();
