@@ -11,6 +11,7 @@ const fullScreenBtn = document.getElementById("fullScreen");
 const fullScreenBtnIcon = fullScreenBtn.querySelector("i");
 const videoContainer = document.getElementById("videoContainer");
 const videoControls = document.getElementById("videoControls");
+const textarea = document.getElementById("commentTextarea");
 
 let controlsMovementTimeout = null;
 let controlsTimeout = null;
@@ -111,12 +112,15 @@ const handleMouseLeave = () => {
 };
 
 const handleKeydown = (event) => {
-  const { key } = event;
-  if (key === " ") {
-    event.preventDefault(); //화면 내려감 방지
-    handlePlayClick();
-  } else if (key === "f") {
-    handleFullScreen();
+  if (event.target !== textarea) {
+    if (event.keyCode === 32) {
+      //재생, 멈춤
+      event.preventDefault(); //화면 내려감 방지
+      handlePlayClick();
+    } else if (event.keyCode === 70) {
+      // 전체화면
+      handleFullScreen();
+    }
   }
 };
 
