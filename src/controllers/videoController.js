@@ -151,3 +151,36 @@ export const createComment = async (req, res) => {
   video.save();
   return res.status(201).json({ newCommentId: comment._id });
 };
+
+export const deleteComment = async (req, res) => {
+  const {
+    params: { id: commentId },
+  } = req;
+  const {
+    session: {
+      user: { _id: userId },
+    },
+  } = req;
+  const comment = await Comment.findById(commentId)
+    .populate("owner")
+    .populate("video");
+  const video = comment.video;
+  const user = await User.findById(userId);
+
+  // 현재 로그인 된 유저의 아이디와 댓글 소유쥬 아이디 같은가?
+  if (String(userId) !== String(comment.owner._id)) {
+    return res.sendStatus(404);
+  }
+  if (!video) {
+    return res.sendStatus(404);
+  }
+
+  //댓글 삭제, 비디오에서 댓글 배열 삭제, 유저에서 댓글 배열 삭제
+  user.comments.splice(user.comments.indexOf(commentId), 1);
+  await user.save();
+  video.comments.splice(video.comments.indexOf(commentId), 1);
+  await video.save();
+  await Comment.findByIdAndRemove(commentId);
+
+  return res.status(200);
+};
