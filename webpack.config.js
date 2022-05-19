@@ -4,13 +4,11 @@ const MiniCssExtractPlugin = require("mini-css-extract-plugin");
 const BASE_JS = "./src/client/js/";
 
 module.exports = {
-  mode: "development",
   plugins: [
     new MiniCssExtractPlugin({
       filename: "css/styles.css",
     }),
   ],
-  watch: true,
   // 변경할 파일 경로
   entry: {
     main: BASE_JS + "main.js",
